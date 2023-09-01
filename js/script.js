@@ -21,7 +21,7 @@ const createCategory = (categories) => {
     categories.forEach((category) => {
         const categoryButtonDiv = document.createElement("span");
         categoryButtonDiv.innerHTML = `
-       <button onclick="loadVideos('${category.category_id}')" id="${category.category_id}" class="btn bg-secondary-subtle py-2 px-3">
+       <button onclick="loadVideos('${category.category_id}')" id="${category.category_id}" class="btn bg-secondary-subtle py-2 px-3 mb-1">
                         ${category.category}
                     </button>
        `;
@@ -69,7 +69,7 @@ const createVideos = (videos) => {
             };
             console.log(convertTime(video.others.posted_date));
             const card = document.createElement("div");
-            card.classList.add("col-lg-3", "mt-4");
+            card.classList.add("col-lg-3", "col-md-6", "mt-4");
             card.innerHTML = `
                             <div class="card">
                                 <div class="position-relative">
