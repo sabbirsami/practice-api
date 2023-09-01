@@ -6,8 +6,10 @@ function loadCategory() {
             createCategory(categories);
         });
 }
-function loadVideos() {
-    fetch(`https://openapi.programming-hero.com/api/videos/category/1000`)
+function loadVideos(category = 1000) {
+    fetch(
+        `https://openapi.programming-hero.com/api/videos/category/${category}`
+    )
         .then((res) => res.json())
         .then((data) => {
             let videos = data.data;
@@ -19,7 +21,7 @@ const createCategory = (categories) => {
     categories.forEach((category) => {
         const categoryButtonDiv = document.createElement("span");
         categoryButtonDiv.innerHTML = `
-       <button class="btn bg-secondary-subtle py-2 px-3">
+       <button onclick="loadVideos('${category.category_id}')" class="btn bg-secondary-subtle py-2 px-3">
                         ${category.category}
                     </button>
        `;
@@ -28,6 +30,7 @@ const createCategory = (categories) => {
 };
 const createVideos = (videos) => {
     const videosDiv = document.getElementById("videos-section");
+    videosDiv.innerHTML = "";
     videos.forEach((video) => {
         console.log(video);
         const card = document.createElement("div");
@@ -55,7 +58,7 @@ const createVideos = (videos) => {
                                 </div>
                                 <div class="ps-3">
                                     <p class="mb-1 fw-semibold">
-                                        Smells Like Teen Spirit
+                                       ${video?.title}
                                     </p>
                                     <p class="mb-1">
                                         <small>${
@@ -69,7 +72,9 @@ const createVideos = (videos) => {
                                         </span>
                                     </p>
                                     <p class="mb-1">
-                                        <small><span>91</span>K views</small>
+                                        <small>${
+                                            video?.others?.views
+                                        } views</small>
                                     </p>
                                 </div>
                             </div>
