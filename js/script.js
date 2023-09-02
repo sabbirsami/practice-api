@@ -1,3 +1,5 @@
+let categoryId = 1000;
+
 function loadCategory() {
     fetch("https://openapi.programming-hero.com/api/videos/categories")
         .then((res) => res.json())
@@ -7,6 +9,7 @@ function loadCategory() {
         });
 }
 function loadVideos(category = 1000) {
+    categoryId = category;
     fetch(
         `https://openapi.programming-hero.com/api/videos/category/${category}`
     )
@@ -28,13 +31,25 @@ const createCategory = (categories) => {
         categoriesDiv.appendChild(categoryButtonDiv);
     });
 };
-const sortByView = (category) => {
-    videos.sort(
-        (a, b) =>
-            parseFloat(b.others.views.replace("k", "")) -
-            parseFloat(a.others.views.replace("k", ""))
-    );
-};
+
+function sortByView() {
+    console.log(categoryId);
+    fetch(
+        `https://openapi.programming-hero.com/api/videos/category/${parseFloat(
+            categoryId
+        )}`
+    )
+        .then((res) => res.json())
+        .then((data) => {
+            let videos = data.data;
+            videos.sort(
+                (a, b) =>
+                    parseFloat(b.others.views.replace("k", "")) -
+                    parseFloat(a.others.views.replace("k", ""))
+            );
+            createVideos(videos);
+        });
+}
 
 const createVideos = (videos) => {
     const videosDiv = document.getElementById("videos-section");
@@ -67,7 +82,6 @@ const createVideos = (videos) => {
 
                 return `${hours}hrs ${minutes}min ago`;
             };
-            console.log(convertTime(video.others.posted_date));
             const card = document.createElement("div");
             card.classList.add("col-lg-3", "col-md-6", "mt-4");
             card.innerHTML = `
@@ -127,6 +141,8 @@ const createVideos = (videos) => {
         });
     }
 };
-
+document.getElementById("blog").addEventListener("click", function () {
+    window.location.href = "/blog.html";
+});
 loadCategory();
 loadVideos();
